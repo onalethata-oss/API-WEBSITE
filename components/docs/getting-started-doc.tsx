@@ -7,13 +7,20 @@ import {
 } from "@/components/content-card"
 import { CodeBlock } from "@/components/code-block"
 import { Badge } from "@/components/ui/badge"
-import { Clock, User, BookOpen, CheckCircle } from "lucide-react"
+import {
+  Clock,
+  User,
+  BookOpen,
+  Zap,
+  Shield,
+  Globe,
+} from "lucide-react"
 
 export function GettingStartedDoc() {
   return (
     <div className="space-y-8">
 
-      {/* Header */}
+      {/* HEADER */}
       <ContentCard>
         <div className="flex flex-col md:flex-row justify-between gap-6">
 
@@ -28,7 +35,7 @@ export function GettingStartedDoc() {
             </h1>
 
             <p className="text-muted-foreground max-w-xl">
-              Learn how to integrate payments, billing, SMS, and secure transactions.
+              Integrate payments, billing, SMS, and secure APIs into your system quickly and efficiently.
             </p>
           </div>
 
@@ -40,29 +47,78 @@ export function GettingStartedDoc() {
               <User size={16} /> Tylersoft Team
             </div>
             <div className="flex gap-2 items-center">
-              <BookOpen size={16} /> 10 min read
+              <BookOpen size={16} /> 8 min read
             </div>
           </div>
 
         </div>
       </ContentCard>
 
-      {/* Overview */}
+      {/* OVERVIEW */}
       <ContentCard>
         <SectionHeading>Overview</SectionHeading>
         <p className="text-muted-foreground">
-          Our API follows REST principles using standard HTTP methods.
+          The Tylersoft API is a REST-based platform that allows developers to
+          integrate core services such as payments, billing systems, and SMS notifications
+          into their applications using simple HTTP requests.
         </p>
       </ContentCard>
 
-      {/* HTTP Methods */}
+      {/* BASE URL */}
+      <ContentCard>
+        <SectionHeading>Base URL</SectionHeading>
+
+        <CodeBlock
+          language="bash"
+          code={`https://api.tylersoft.com/v2`}
+        />
+
+        <Callout type="info" title="Tip">
+          All requests must be made over HTTPS.
+        </Callout>
+      </ContentCard>
+
+      {/* FEATURES */}
+      <ContentCard>
+        <SectionHeading>Key Features</SectionHeading>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          <div className="p-4 border rounded-lg flex gap-3">
+            <Zap /> Fast Transactions
+          </div>
+          <div className="p-4 border rounded-lg flex gap-3">
+            <Shield /> Secure API Access
+          </div>
+          <div className="p-4 border rounded-lg flex gap-3">
+            <Globe /> Easy Integration
+          </div>
+        </div>
+      </ContentCard>
+
+      {/* HOW IT WORKS */}
+      <ContentCard>
+        <SectionHeading>How It Works</SectionHeading>
+
+        <p className="text-muted-foreground mb-3">
+          You interact with the API by sending HTTP requests to specific endpoints.
+          Each request includes your API key for authentication and returns a structured response.
+        </p>
+
+        <ul className="list-disc pl-6 text-muted-foreground space-y-1">
+          <li>Send a request to an endpoint</li>
+          <li>Include your API key</li>
+          <li>Receive a JSON response</li>
+        </ul>
+      </ContentCard>
+
+      {/* HTTP METHODS */}
       <ContentCard>
         <SectionHeading>HTTP Methods</SectionHeading>
 
         <CodeBlock
           title="GET Example"
           language="bash"
-          code={`curl -X GET "https://api.example.com/v2/transactions/123"
+          code={`curl -X GET "https://api.tylersoft.com/v2/transactions"
 -H "Authorization: Bearer YOUR_API_KEY"`}
         />
 
@@ -79,32 +135,60 @@ export function GettingStartedDoc() {
         />
       </ContentCard>
 
-      {/* Auth */}
+      {/* AUTHENTICATION */}
       <ContentCard>
         <SectionHeading>Authentication</SectionHeading>
 
+        <p className="text-muted-foreground mb-3">
+          Every request must include your API key in the Authorization header.
+        </p>
+
         <CodeBlock
           language="bash"
-          code={`curl -H "Authorization: Bearer YOUR_API_KEY"`}
+          code={`Authorization: Bearer YOUR_API_KEY`}
         />
 
         <Callout type="warning" title="Security">
-          Never expose API keys on the frontend.
+          Never expose your API key in frontend applications.
         </Callout>
       </ContentCard>
 
-      {/* Quick Start */}
+      {/* RESPONSE */}
       <ContentCard>
-        <SectionHeading>Quick Start</SectionHeading>
+        <SectionHeading>Response Format</SectionHeading>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          {["Get API Key", "Choose API", "Test", "Go Live"].map((step, i) => (
-            <div key={i} className="flex items-center gap-3 p-3 border rounded-lg">
-              <CheckCircle size={18} />
-              <span>{step}</span>
-            </div>
-          ))}
-        </div>
+        <p className="text-muted-foreground mb-3">
+          All responses are returned in JSON format.
+        </p>
+
+        <CodeBlock
+          language="json"
+          code={`{
+  "status": "success",
+  "data": {
+    "id": "txn_123",
+    "amount": 100,
+    "currency": "BWP"
+  }
+}`}
+        />
+      </ContentCard>
+
+      {/* ERRORS */}
+      <ContentCard>
+        <SectionHeading>Error Handling</SectionHeading>
+
+        <p className="text-muted-foreground mb-3">
+          If something goes wrong, the API will return an error response.
+        </p>
+
+        <CodeBlock
+          language="json"
+          code={`{
+  "status": "error",
+  "message": "Invalid API Key"
+}`}
+        />
       </ContentCard>
 
     </div>
