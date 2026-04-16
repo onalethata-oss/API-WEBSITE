@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Trash2, Plus, Search, UserCircle, Eye, Pencil } from "lucide-react"
+import { Download } from "lucide-react"
 
 interface User {
   id: number
@@ -144,6 +145,33 @@ export default function Dashboard() {
     setSelectedUser(null)
   }
 
+  const handleDownloadCSV = () => {
+  const headers = ["Name", "Email", "APIs", "Status", "Last Accessed"]
+
+  const rows = users.map(user => [
+    user.name,
+    user.email,
+    user.apis.join(", "),
+    user.status,
+    user.lastAccessed
+  ])
+
+  const csvContent =
+    [headers, ...rows]
+      .map(row => row.join(","))
+      .join("\n")
+
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
+  const url = URL.createObjectURL(blob)
+
+  const link = document.createElement("a")
+  link.href = url
+  link.setAttribute("download", "users.csv")
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
   return (
     <div className="p-6 max-w-6xl mx-auto bg-blue-50 min-h-screen">
 
@@ -195,13 +223,26 @@ export default function Dashboard() {
       {/* ACTION BAR */}
       <div className="flex justify-between mb-6">
 
-        <button
-          onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-xl shadow"
-        >
-          <Plus size={16} />
-          Add User
-        </button>
+  {/* LEFT SIDE (buttons together) */}
+  <div className="flex gap-2">
+    <button
+      onClick={() => setShowModal(true)}
+      className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-xl shadow"
+    >
+      <Plus size={16} />
+      Add User
+    </button>
+
+    <button
+      onClick={handleDownloadCSV}
+      className="flex items-center gap-2 bg-green-600 text-white px-5 py-2 rounded-xl shadow"
+    >
+      <Download size={16} />
+      Download
+    </button>
+  </div>
+
+
 
         <div className="relative w-72">
           <Search className="absolute left-3 top-3 text-gray-400" size={18} />
@@ -212,7 +253,8 @@ export default function Dashboard() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-      </div>
+      
+</div>
 
       {/* TABLE */}
       <div className="bg-white rounded-xl shadow border overflow-hidden">
