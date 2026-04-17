@@ -46,9 +46,7 @@ export function GettingStartedDoc() {
             <div className="flex gap-2 items-center">
               <User size={16} /> Tylersoft Team
             </div>
-            <div className="flex gap-2 items-center">
-              <BookOpen size={16} /> 8 min read
-            </div>
+           
           </div>
 
         </div>

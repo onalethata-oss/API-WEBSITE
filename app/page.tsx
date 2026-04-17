@@ -27,7 +27,7 @@ export default function Home() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  // ✅ KEEP activeDoc for sidebar highlight
+  // ✅ controls which API page is shown
   const [activeDoc, setActiveDoc] = useState("getting-started.md")
 
   // 💬 Chat
@@ -39,24 +39,16 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
 
   /**
-   * ✅ SCROLL NAVIGATION (NO PAGE SWITCHING)
+   * ✅ NAVIGATION (switch pages instead of scrolling)
    */
   const handleNavigate = (_href: string, docFile: string) => {
-    const id = docFile.replace(".md", "")
-    const el = document.getElementById(id)
-
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" })
-    }
-
-    // ✅ keep sidebar highlight working
-    setActiveDoc(docFile)
-
-    setSidebarOpen(false)
+    setActiveDoc(docFile)          // 🔥 change page
+    setSidebarOpen(false)          // close sidebar (mobile)
+    window.scrollTo({ top: 0 })    // scroll to top
   }
 
   /**
-   * 💬 CHAT
+   * 💬 CHAT FUNCTION
    */
   const sendMessage = async () => {
     if (!input.trim() || loading) return
@@ -97,7 +89,7 @@ export default function Home() {
       {/* 🔹 HEADER */}
       <SiteHeader
         onMenuClick={() => setSidebarOpen(!sidebarOpen)}
-        navigationItems={navigationItems || []} // ✅ prevents error
+        navigationItems={navigationItems || []}
         onNavigate={handleNavigate}
       />
 
@@ -107,7 +99,7 @@ export default function Home() {
         <DocSidebar
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
-          activeDoc={activeDoc} // ✅ highlight works
+          activeDoc={activeDoc}
           onNavigate={handleNavigate}
         />
 
@@ -115,37 +107,47 @@ export default function Home() {
         <main className="flex-1 min-w-0">
           <ScrollArea className="h-[calc(100vh-4rem)]">
 
-            <div className="max-w-4xl mx-auto p-6 space-y-16">
+            <div className="max-w-4xl mx-auto p-6">
 
-              {/* ✅ ALL DOCS */}
+              {/* ✅ ONLY ONE API SHOWS AT A TIME */}
 
-              <section id="getting-started" className="scroll-mt-20">
-                <h2 className="text-2xl font-bold mb-4">Getting Started</h2>
-                <GettingStartedDoc />
-              </section>
+              {activeDoc === "getting-started.md" && (
+                <>
+                  <h2 className="text-2xl font-bold mb-4">Getting Started</h2>
+                  <GettingStartedDoc />
+                </>
+              )}
 
-              <section id="processor-payment-api" className="scroll-mt-20">
-                <h2 className="text-2xl font-bold mb-4">Processor Payment API</h2>
-                <APIDocumentation />
-              </section>
+              {activeDoc === "processor-payment-api.md" && (
+                <>
+                  <h2 className="text-2xl font-bold mb-4">Processor Payment API</h2>
+                  <APIDocumentation />
+                </>
+              )}
 
-              <section id="biller-engine" className="scroll-mt-20">
-                <h2 className="text-2xl font-bold mb-4">Biller Engine API</h2>
-                <BillerEngineDoc />
-              </section>
+              {activeDoc === "biller-engine.md" && (
+                <>
+                  <h2 className="text-2xl font-bold mb-4">Biller Engine API</h2>
+                  <BillerEngineDoc />
+                </>
+              )}
 
-              <section id="sms-api" className="scroll-mt-20">
-                <h2 className="text-2xl font-bold mb-4">SMS API</h2>
-                <SmsApiDoc />
-              </section>
+              {activeDoc === "sms-api.md" && (
+                <>
+                  <h2 className="text-2xl font-bold mb-4">SMS API</h2>
+                  <SmsApiDoc />
+                </>
+              )}
 
-              <section id="secure-acceptance" className="scroll-mt-20">
-                <h2 className="text-2xl font-bold mb-4">Secure Acceptance</h2>
-                <SecureAcceptance />
-              </section>
+              {activeDoc === "secure-acceptance.md" && (
+                <>
+                  <h2 className="text-2xl font-bold mb-4">Secure Acceptance</h2>
+                  <SecureAcceptance />
+                </>
+              )}
 
               {/* 🔹 FOOTER */}
-              <footer className="pt-10 border-t text-sm text-muted-foreground flex justify-between">
+              <footer className="pt-10 border-t text-sm text-muted-foreground flex justify-between mt-10">
                 <span>© 2026 Tylersoft-Eclectics</span>
                 <div className="flex gap-4">
                   <a href="#">Terms</a>
@@ -218,3 +220,4 @@ export default function Home() {
     </div>
   )
 }
+

@@ -34,61 +34,145 @@ export function SecureAcceptance() {
       <ContentCard>
         <SectionHeading>Introduction</SectionHeading>
         <p>
-          Tylersoft provides Secure Acceptance and REST API options for payment gateway integration.
+          Tylersoft provides two integration options for payment processing:
+          <strong> Secure Acceptance</strong> and <strong>REST API</strong>.
         </p>
       </ContentCard>
 
       {/* Workflow */}
-      <ContentCard>
-        <SectionHeading>Workflow Overview</SectionHeading>
+      {/* Workflow */}
+<ContentCard>
+  <SectionHeading>Workflow Overview</SectionHeading>
 
-        <ul className="list-none space-y-2">
-          <li>1. Generate Web Token (Authorization)</li>
-          <li>2. Process Payment</li>
-        </ul>
-      </ContentCard>
+  <p className="mb-3">
+    The Secure Acceptance integration involves two key steps:
+  </p>
 
-      {/* Step 1 */}
-      <ContentCard>
-        <SectionHeading>1. Authorization Request</SectionHeading>
+  <div className="space-y-4 text-sm">
 
-        <Callout type="info" title="Endpoint">
-          POST /ecommerce/web-token
-        </Callout>
+   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-        <SubHeading>Headers</SubHeading>
-        <p>Authorization: Basic</p>
+  {/* Step 1 */}
+  <div className="p-5 rounded-2xl border bg-muted/40 hover:shadow-sm transition">
+    <div className="flex items-center gap-3 mb-2">
+      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-electric-blue text-white text-sm font-bold">
+        1
+      </div>
+      <SubHeading>Generate Web Token</SubHeading>
+    </div>
 
-        <SubHeading>Request</SubHeading>
-        <CodeBlock
-          language="json"
-          code={`{
+    <p className="text-sm text-muted-foreground">
+      This step involves requesting an authorization token from the payment gateway.
+      The token enables secure communication between your application and the Tylersoft API.
+      The generated token must be included in all subsequent API requests.
+    </p>
+  </div>
+
+  {/* Step 2 */}
+  <div className="p-5 rounded-2xl border bg-muted/40 hover:shadow-sm transition">
+    <div className="flex items-center gap-3 mb-2">
+      <div className="h-8 w-8 flex items-center justify-center rounded-full bg-electric-orange text-white text-sm font-bold">
+        2
+      </div>
+      <SubHeading>Process Payment</SubHeading>
+    </div>
+
+    <p className="text-sm text-muted-foreground">
+      After obtaining the web token, a payment request is made by submitting transaction details
+      such as amount, customer information, and service ID. Once processed, the customer is redirected
+      to a secure checkout page where they complete the payment by entering their card details.
+    </p>
+  </div>
+
+</div>
+
+  </div>
+</ContentCard>
+
+     
+ {/* Authorization */}
+<ContentCard>
+  <SectionHeading>1. Authorization Request</SectionHeading>
+
+  <Callout type="info" title="Endpoint">
+    https://Url:0000/ecommerce/web-token
+  </Callout>
+
+  {/* Request Details */}
+  <SubHeading>Request Details</SubHeading>
+  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+
+    <div className="p-3 rounded-xl border bg-muted/40">
+      <p className="text-xs text-muted-foreground">Method</p>
+      <p className="font-semibold">POST</p>
+    </div>
+
+    <div className="p-3 rounded-xl border bg-muted/40">
+      <p className="text-xs text-muted-foreground">Content-Type</p>
+      <p className="font-semibold">application/json</p>
+    </div>
+
+    <div className="p-3 rounded-xl border bg-muted/40">
+      <p className="text-xs text-muted-foreground">Authorization</p>
+      <p className="font-semibold">Basic</p>
+    </div>
+
+  </div>
+
+  {/* Parameters */}
+  <SubHeading>Parameters</SubHeading>
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+    <div className="p-4 rounded-xl border hover:shadow-sm transition">
+      <p className="font-semibold">username</p>
+      <p className="text-sm text-muted-foreground mt-1">
+        Your API username provided by Tylersoft.
+      </p>
+    </div>
+
+    <div className="p-4 rounded-xl border hover:shadow-sm transition">
+      <p className="font-semibold">password</p>
+      <p className="text-sm text-muted-foreground mt-1">
+        Your API password provided by Tylersoft.
+      </p>
+    </div>
+
+  </div>
+
+  {/* Sample Request */}
+  <SubHeading>Sample Request</SubHeading>
+  <CodeBlock
+    language="json"
+    code={`{
   "username": "your_username",
   "password": "your_password"
 }`}
-        />
+  />
 
-        <SubHeading>Success Response</SubHeading>
-        <CodeBlock
-          language="json"
-          code={`{
+  {/* Success Response */}
+  <SubHeading>Success Response</SubHeading>
+  <CodeBlock
+    language="json"
+    code={`{
   "status": "00",
   "statusDescription": "Success",
-  "token": "abc123token"
+  "token": "b0c95e2144bdd4c86b94501a814f9bbd9d025651d8497df"
 }`}
-        />
+  />
 
-        <SubHeading>Failure Response</SubHeading>
-        <CodeBlock
-          language="json"
-          code={`{
+  {/* Failure Response */}
+  <SubHeading>Failure Response</SubHeading>
+  <CodeBlock
+    language="json"
+    code={`{
   "status": "99",
-  "statusDescription": "Invalid request"
+  "statusDescription": "Invalid request",
+  "token": ""
 }`}
-        />
-      </ContentCard>
+  />
+</ContentCard>
 
-      {/* Step 2 */}
+      {/* Payment */}
       <ContentCard>
         <SectionHeading>2. Payment Request</SectionHeading>
 
@@ -97,10 +181,10 @@ export function SecureAcceptance() {
         </Callout>
 
         <SubHeading>Headers</SubHeading>
-        <p>Authorization: Bearer web_token</p>
+        <p>Content-Type: application/json</p>
+        <p>Authorization: Bearer &lt;web_token&gt;</p>
 
         <SubHeading>Request Parameters</SubHeading>
-
         <table className="w-full text-sm border-collapse">
           <thead>
             <tr className="border-b bg-muted/50">
@@ -110,11 +194,11 @@ export function SecureAcceptance() {
           </thead>
           <tbody>
             <tr><td>amount</td><td>Transaction amount</td></tr>
-            <tr><td>accountno</td><td>Customer account</td></tr>
-            <tr><td>serviceid</td><td>Service ID</td></tr>
-            <tr><td>msisdn</td><td>Phone number</td></tr>
-            <tr><td>currencycode</td><td>Currency (BWP)</td></tr>
-            <tr><td>name</td><td>Customer name</td></tr>
+            <tr><td>accountno</td><td>Customer account number</td></tr>
+            <tr><td>serviceid</td><td>Service ID assigned by Tylersoft</td></tr>
+            <tr><td>msisdn</td><td>Customer phone number</td></tr>
+            <tr><td>currencycode</td><td>Currency (e.g. BWP)</td></tr>
+            <tr><td>name</td><td>Customer full name</td></tr>
             <tr><td>transactionid</td><td>Unique transaction ID</td></tr>
           </tbody>
         </table>
@@ -144,9 +228,9 @@ export function SecureAcceptance() {
         />
 
         <SubHeading>Failure Codes</SubHeading>
-        <ul>
+        <ul className="list-disc pl-6">
           <li>99 - Invalid request</li>
-          <li>101 - Unauthorized</li>
+          <li>101 - Unauthorized access</li>
         </ul>
       </ContentCard>
 
@@ -155,18 +239,24 @@ export function SecureAcceptance() {
         <SectionHeading>Redirection Flow</SectionHeading>
 
         <p>
-          After payment request, the user is redirected to a secure checkout page.
+          After processing payment, the customer is redirected to a secure checkout page
+          to enter card details and complete the transaction.
         </p>
 
         <CodeBlock
           language="html"
-          code={`<form action="https://secure.cybersource.com" method="POST">
-  <input type="hidden" name="transaction_id" value="TRX_0008786707" />
-</form>`}
+          code={`<form id="redirectForm" method="POST" action="https://secure.cybersource.com">
+  <input type="hidden" name="transaction_id" value="TRX_0008786707">
+  <input type="hidden" name="redirect_url" value="https://merchant.com/success">
+</form>
+
+<script>
+  document.getElementById("redirectForm").submit();
+</script>`}
         />
 
         <Callout type="info" title="Frontend Handling">
-          Render the response HTML directly in the browser.
+          Render the HTML response returned by the server directly in the browser.
         </Callout>
       </ContentCard>
 
@@ -174,16 +264,8 @@ export function SecureAcceptance() {
       <ContentCard>
         <SectionHeading>Illustration</SectionHeading>
 
-        <Callout type="warning" title="Add Images">
-          Add screenshots to:
-          <br />
-          /public/images/secure-acceptance-step1.jpg
-          <br />
-          /public/images/secure-acceptance-step2.jpg
-        </Callout>
-
         <div className="space-y-4 mt-4">
-            <p>Below is the first page that appears after clicking the checkout button</p>
+          <p>First page after clicking checkout</p>
           <Image
             src="/images/secure-acceptance-step1.jpg"
             alt="Checkout Page"
@@ -191,7 +273,8 @@ export function SecureAcceptance() {
             height={500}
             className="rounded-lg border"
           />
-          <p>Below is the second page that appears after completing the checkout process</p>
+
+          <p>Second page after completing payment</p>
           <Image
             src="/images/secure-acceptance-step2.jpg"
             alt="Payment Page"
@@ -211,13 +294,14 @@ export function SecureAcceptance() {
             <tr className="border-b bg-muted/50">
               <th className="p-3 text-left">Code</th>
               <th className="p-3 text-left">Meaning</th>
+              <th className="p-3 text-left">Source</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>100</td><td>Successful</td></tr>
-            <tr><td>203</td><td>Declined</td></tr>
-            <tr><td>204</td><td>Insufficient funds</td></tr>
-            <tr><td>205</td><td>Lost card</td></tr>
+            <tr><td>100</td><td>Successful Transaction</td><td>Issuing Bank</td></tr>
+            <tr><td>203</td><td>Declined</td><td>Issuing Bank</td></tr>
+            <tr><td>204</td><td>Insufficient Funds</td><td>Issuing Bank</td></tr>
+            <tr><td>205</td><td>Lost/Stolen Card</td><td>Issuing Bank</td></tr>
           </tbody>
         </table>
       </ContentCard>

@@ -51,7 +51,7 @@ export default function Chatbot() {
     <>
       {/* Toggle Button */}
       <div className="chat-toggle" onClick={() => setOpen(!open)}>
-        💬
+        💬 
       </div>
 
       {/* Chat Window */}

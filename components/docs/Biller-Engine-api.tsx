@@ -133,7 +133,7 @@ export function BillerEngineDoc() {
       <ContentCard>
         <SectionHeading>Message Flow Diagram</SectionHeading>
 
-        <Callout type="warning" title="Add Diagram">
+        <Callout type="warning" title="Biller Engine Flow Diagram">
           Image is in the images folder, use the following path to display it:
           <code className="ml-2">/public/images/biller-flow.png</code>
         </Callout>
